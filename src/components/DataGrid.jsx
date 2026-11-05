@@ -47,7 +47,6 @@ const extractPdfData = (rawTextData) => {
     }
   }
 
-  // Melengkapi rentang tanggal yang kosong dalam periode
   let datesArray = Array.from(uniqueDates);
   if (datesArray.length > 1) {
     const dateObjects = datesArray.map(parseDate).sort((a, b) => a - b);
@@ -83,7 +82,6 @@ const extractPdfData = (rawTextData) => {
     let UM = 0;
     let H = 1;
 
-    // Deteksi lupa absen pulang
     if (ev.jamMasuk && !ev.jamPulang) {
       rekapObj[ev.nama].tglBermasalah.push(ev.tanggal);
     }
@@ -91,7 +89,6 @@ const extractPdfData = (rawTextData) => {
     if (ev.jamPulang) {
       let [jP, mP] = ev.jamPulang.split(":").map(Number);
 
-      // Toleransi pembulatan lembur menit 55 - 59
       if (mP >= 55 && mP <= 59) {
         jP += 1;
         if (jP === 24) jP = 0;
@@ -134,11 +131,18 @@ export default function DataGrid({ rawTextData, onReset }) {
   const [tanggalList] = useState(initialData.tanggalList);
   const [rekapData, setRekapData] = useState(initialData.rekapData);
 
+  // State Modal Individu
   const [modalBA, setModalBA] = useState({
     isOpen: false,
     nama: "",
     unit: "",
     selectedTgl: [],
+  });
+
+  // State Modal Massal (Pilih Banyak Pekerja & Tanggal)
+  const [modalMassal, setModalMassal] = useState({
+    isOpen: false,
+    items: [], // { nama, unitKerja, selectedTgl: [] }
   });
 
   const savedData = localStorage.getItem("dataPekerja");
@@ -174,7 +178,6 @@ export default function DataGrid({ rawTextData, onReset }) {
             } else newUM = 0;
           }
 
-          // Otomatis tandai tanggal jika diisi secara manual
           let updatedTglBermasalah = [...pekerja.tglBermasalah];
           if (
             (newH > 0 || newL > 0) &&
@@ -197,6 +200,7 @@ export default function DataGrid({ rawTextData, onReset }) {
     });
   };
 
+  // Handler Modal Individu
   const handleBukaModal = (pekerja, dbUnit) => {
     setModalBA({
       isOpen: true,
@@ -218,7 +222,8 @@ export default function DataGrid({ rawTextData, onReset }) {
     setModalBA({ ...modalBA, isOpen: false });
   };
 
-  const handleCetakSemuaBA = () => {
+  // Handler Modal Massal
+  const handleBukaModalMassal = () => {
     const listBermasalah = rekapData
       .filter((p) => p.tglBermasalah && p.tglBermasalah.length > 0)
       .map((p) => {
@@ -230,9 +235,7 @@ export default function DataGrid({ rawTextData, onReset }) {
         return {
           nama: p.nama,
           unitKerja: dbUnit,
-          tanggalList: [...p.tglBermasalah].sort(
-            (a, b) => parseDate(a) - parseDate(b),
-          ),
+          selectedTgl: [...p.tglBermasalah],
         };
       });
 
@@ -241,11 +244,50 @@ export default function DataGrid({ rawTextData, onReset }) {
       return;
     }
 
+    setModalMassal({
+      isOpen: true,
+      items: listBermasalah,
+    });
+  };
+
+  const handleToggleTanggalMassal = (namaPekerja, tgl) => {
+    setModalMassal((prev) => ({
+      ...prev,
+      items: prev.items.map((item) => {
+        if (item.nama === namaPekerja) {
+          const isSelected = item.selectedTgl.includes(tgl);
+          const newTgl = isSelected
+            ? item.selectedTgl.filter((d) => d !== tgl)
+            : [...item.selectedTgl, tgl];
+          return { ...item, selectedTgl: newTgl };
+        }
+        return item;
+      }),
+    }));
+  };
+
+  const handleCetakMassalConfirm = () => {
+    const validList = modalMassal.items
+      .filter((item) => item.selectedTgl.length > 0)
+      .map((item) => ({
+        nama: item.nama,
+        unitKerja: item.unitKerja,
+        tanggalList: [...item.selectedTgl].sort(
+          (a, b) => parseDate(a) - parseDate(b),
+        ),
+      }));
+
+    if (validList.length === 0) {
+      alert("Pilih minimal 1 tanggal pada salah satu pekerja untuk dicetak!");
+      return;
+    }
+
     const periodeText =
       tanggalList.length > 0
         ? `${tanggalList[0]}_sd_${tanggalList[tanggalList.length - 1]}`
         : "";
-    generateBeritaAcaraMassal(listBermasalah, periodeText);
+    generateBeritaAcaraMassal(validList, periodeText);
+    setModalMassal({ isOpen: false, items: [] });
   };
 
   return (
@@ -262,7 +304,7 @@ export default function DataGrid({ rawTextData, onReset }) {
             Batal / Upload Ulang
           </button>
           <button
-            onClick={handleCetakSemuaBA}
+            onClick={handleBukaModalMassal}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm font-bold shadow"
           >
             Cetak Semua BA (1 File)
@@ -423,7 +465,7 @@ export default function DataGrid({ rawTextData, onReset }) {
         </table>
       </div>
 
-      {/* --- MODAL PILIH TANGGAL BERITA ACARA --- */}
+      {/* --- MODAL PILIH TANGGAL INDIVIDU --- */}
       {modalBA.isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 transition-opacity">
           <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-sm border-t-4 border-red-500">
@@ -472,6 +514,80 @@ export default function DataGrid({ rawTextData, onReset }) {
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm font-bold shadow transition-colors"
               >
                 Cetak DOC
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- MODAL PILIH TANGGAL MASSAL --- */}
+      {modalMassal.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 transition-opacity">
+          <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-xl border-t-4 border-red-600 max-h-[90vh] flex flex-col">
+            <h3 className="text-xl font-bold text-gray-800 mb-1">
+              Filter Berita Acara Massal
+            </h3>
+            <p className="mb-4 text-sm text-gray-600">
+              Pilih tanggal yang ingin dicetak untuk masing-masing pekerja
+              sebelum menggabungkannya ke dalam 1 file Word.
+            </p>
+
+            <div className="overflow-y-auto flex-1 border border-gray-200 p-4 mb-4 rounded-md bg-gray-50 space-y-4">
+              {modalMassal.items.map((item) => (
+                <div
+                  key={item.nama}
+                  className="bg-white p-3 rounded border border-gray-200 shadow-sm"
+                >
+                  <div className="flex justify-between items-center mb-2 pb-1 border-b">
+                    <span className="font-bold text-gray-800 text-sm">
+                      {item.nama}
+                    </span>
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-medium">
+                      {item.unitKerja}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {tanggalList.map((tgl) => (
+                      <label
+                        key={tgl}
+                        className="flex items-center space-x-2 cursor-pointer text-xs p-1 hover:bg-gray-50 rounded"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={item.selectedTgl.includes(tgl)}
+                          onChange={() =>
+                            handleToggleTanggalMassal(item.nama, tgl)
+                          }
+                          className="w-3.5 h-3.5 rounded text-red-600 focus:ring-red-500 border-gray-300"
+                        />
+                        <span
+                          className={
+                            item.selectedTgl.includes(tgl)
+                              ? "font-bold text-gray-900"
+                              : "text-gray-500"
+                          }
+                        >
+                          {tgl}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-2 border-t">
+              <button
+                onClick={() => setModalMassal({ isOpen: false, items: [] })}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-bold transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleCetakMassalConfirm}
+                className="px-5 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm font-bold shadow transition-colors flex items-center gap-2"
+              >
+                Cetak 1 File Massal
               </button>
             </div>
           </div>
