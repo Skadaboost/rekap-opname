@@ -49,6 +49,7 @@ const angkaTerbilang = (nilai) => {
       angkaTerbilang(nilai % 1000000000);
   return hasil;
 };
+
 const convertTerbilang = (nilai) => {
   if (nilai === 0) return "Nol Rupiah";
   return angkaTerbilang(Math.round(nilai)).trim() + " Rupiah";
@@ -245,7 +246,7 @@ export const generateExcel = async (tanggalList, rekapData) => {
     });
   };
 
-  sortedRekapData.forEach((pekerja, index) => {
+  sortedRekapData.forEach((pekerja) => {
     const db =
       pekerjaDB.find(
         (p) =>
@@ -310,7 +311,7 @@ export const generateExcel = async (tanggalList, rekapData) => {
 
     const upahHarian = Number(db.upahHarian) || 0;
     const upahLembur = Number(db.upahLembur) || 0;
-    const nominalUM = 15000;
+    const nominalUM = 15000; // Standar nominal UM
 
     const subtotalHarian = totalH * upahHarian;
     const subtotalLembur = totalL * upahLembur;
@@ -443,6 +444,9 @@ export const generateExcel = async (tanggalList, rekapData) => {
     "Kabag. Logistik,",
     "",
     "",
+    "Kepala Workshop,",
+    "",
+    "",
     "Manajer Workshop,",
     "",
     "",
@@ -457,6 +461,9 @@ export const generateExcel = async (tanggalList, rekapData) => {
     "",
     "",
     "Robi S",
+    "",
+    "",
+    "Fajar S",
     "",
     "",
     "Budi Pranoto",

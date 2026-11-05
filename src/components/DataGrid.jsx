@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { generateExcel } from "../utils/exportExcel";
-import { generateBeritaAcara } from "../utils/exportDoc";
+import {
+  generateBeritaAcara,
+  generateBeritaAcaraMassal,
+} from "../utils/exportDoc";
 
-// Helper untuk memanipulasi tanggal
+// Helper tanggal
 const parseDate = (str) => {
   const [d, m, y] = str.split("-");
   return new Date(y, m - 1, d);
@@ -44,7 +47,7 @@ const extractPdfData = (rawTextData) => {
     }
   }
 
-  // --- LOGIKA MENGISI TANGGAL KOSONG (RENTANG WAKTU) ---
+  // Melengkapi rentang tanggal yang kosong dalam periode
   let datesArray = Array.from(uniqueDates);
   if (datesArray.length > 1) {
     const dateObjects = datesArray.map(parseDate).sort((a, b) => a - b);
@@ -55,13 +58,12 @@ const extractPdfData = (rawTextData) => {
     let curr = new Date(minDate);
     while (curr <= maxDate) {
       completeDates.push(formatDate(curr));
-      curr.setDate(curr.getDate() + 1); // Tambah 1 hari
+      curr.setDate(curr.getDate() + 1);
     }
     datesArray = completeDates;
   } else {
     datesArray.sort();
   }
-  // -----------------------------------------------------
 
   const rekapObj = {};
 
@@ -81,6 +83,7 @@ const extractPdfData = (rawTextData) => {
     let UM = 0;
     let H = 1;
 
+    // Deteksi lupa absen pulang
     if (ev.jamMasuk && !ev.jamPulang) {
       rekapObj[ev.nama].tglBermasalah.push(ev.tanggal);
     }
@@ -88,6 +91,7 @@ const extractPdfData = (rawTextData) => {
     if (ev.jamPulang) {
       let [jP, mP] = ev.jamPulang.split(":").map(Number);
 
+      // Toleransi pembulatan lembur menit 55 - 59
       if (mP >= 55 && mP <= 59) {
         jP += 1;
         if (jP === 24) jP = 0;
@@ -124,17 +128,16 @@ const extractPdfData = (rawTextData) => {
 
   return { tanggalList: datesArray, rekapData: Object.values(rekapObj) };
 };
+
 export default function DataGrid({ rawTextData, onReset }) {
   const [initialData] = useState(() => extractPdfData(rawTextData));
   const [tanggalList] = useState(initialData.tanggalList);
   const [rekapData, setRekapData] = useState(initialData.rekapData);
 
-  // State untuk mengontrol Modal Berita Acara
   const [modalBA, setModalBA] = useState({
     isOpen: false,
     nama: "",
     unit: "",
-    tglBermasalah: [],
     selectedTgl: [],
   });
 
@@ -170,8 +173,19 @@ export default function DataGrid({ rawTextData, onReset }) {
               else newUM = 0;
             } else newUM = 0;
           }
+
+          // Otomatis tandai tanggal jika diisi secara manual
+          let updatedTglBermasalah = [...pekerja.tglBermasalah];
+          if (
+            (newH > 0 || newL > 0) &&
+            !updatedTglBermasalah.includes(tanggal)
+          ) {
+            updatedTglBermasalah.push(tanggal);
+          }
+
           return {
             ...pekerja,
+            tglBermasalah: updatedTglBermasalah,
             absen: {
               ...pekerja.absen,
               [tanggal]: { H: newH, L: newL, UM: newUM },
@@ -183,13 +197,12 @@ export default function DataGrid({ rawTextData, onReset }) {
     });
   };
 
-  const handleBukaModal = (nama, unit, tglBermasalah) => {
+  const handleBukaModal = (pekerja, dbUnit) => {
     setModalBA({
       isOpen: true,
-      nama: nama,
-      unit: unit,
-      tglBermasalah: tglBermasalah,
-      selectedTgl: [...tglBermasalah], // Default: Semua tercentang
+      nama: pekerja.nama,
+      unit: dbUnit,
+      selectedTgl: [...pekerja.tglBermasalah],
     });
   };
 
@@ -198,12 +211,41 @@ export default function DataGrid({ rawTextData, onReset }) {
       alert("Pilih minimal 1 tanggal untuk dibuatkan Berita Acara!");
       return;
     }
-    // Sortir agar tanggal yang dicetak berurutan
     const sortedTgl = [...modalBA.selectedTgl].sort(
       (a, b) => parseDate(a) - parseDate(b),
     );
     generateBeritaAcara(modalBA.nama, modalBA.unit, sortedTgl);
-    setModalBA({ ...modalBA, isOpen: false }); // Tutup modal setelah cetak
+    setModalBA({ ...modalBA, isOpen: false });
+  };
+
+  const handleCetakSemuaBA = () => {
+    const listBermasalah = rekapData
+      .filter((p) => p.tglBermasalah && p.tglBermasalah.length > 0)
+      .map((p) => {
+        const dbUnit =
+          pekerjaDB.find(
+            (db) =>
+              db.nama.toLowerCase().trim() === p.nama.toLowerCase().trim(),
+          )?.unitKerja || "WORKSHOP";
+        return {
+          nama: p.nama,
+          unitKerja: dbUnit,
+          tanggalList: [...p.tglBermasalah].sort(
+            (a, b) => parseDate(a) - parseDate(b),
+          ),
+        };
+      });
+
+    if (listBermasalah.length === 0) {
+      alert("Tidak ada pekerja yang memiliki absensi bermasalah!");
+      return;
+    }
+
+    const periodeText =
+      tanggalList.length > 0
+        ? `${tanggalList[0]}_sd_${tanggalList[tanggalList.length - 1]}`
+        : "";
+    generateBeritaAcaraMassal(listBermasalah, periodeText);
   };
 
   return (
@@ -212,12 +254,18 @@ export default function DataGrid({ rawTextData, onReset }) {
         <h2 className="text-xl font-bold text-gray-800">
           Langkah 2: Preview & Edit Rekap Opname
         </h2>
-        <div className="space-x-3 mt-4 md:mt-0 flex">
+        <div className="space-x-3 mt-4 md:mt-0 flex flex-wrap gap-2">
           <button
             onClick={onReset}
             className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm font-medium"
           >
             Batal / Upload Ulang
+          </button>
+          <button
+            onClick={handleCetakSemuaBA}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm font-bold shadow"
+          >
+            Cetak Semua BA (1 File)
           </button>
           <button
             onClick={() => generateExcel(tanggalList, rekapData)}
@@ -357,24 +405,16 @@ export default function DataGrid({ rawTextData, onReset }) {
                   </td>
 
                   <td className="px-2 py-1 border border-gray-300 text-center">
-                    {pekerja.tglBermasalah.length > 0 ? (
-                      <button
-                        onClick={() =>
-                          handleBukaModal(
-                            pekerja.nama,
-                            dbUnit,
-                            pekerja.tglBermasalah,
-                          )
-                        }
-                        className="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-700 font-bold shadow transition-transform transform active:scale-95"
-                      >
-                        Buat DOC
-                      </button>
-                    ) : (
-                      <span className="text-green-600 text-xs font-bold">
-                        Aman
-                      </span>
-                    )}
+                    <button
+                      onClick={() => handleBukaModal(pekerja, dbUnit)}
+                      className={`text-xs px-2 py-1 rounded font-bold transition-transform transform active:scale-95 ${
+                        pekerja.tglBermasalah.length > 0
+                          ? "bg-red-500 hover:bg-red-700 text-white shadow"
+                          : "bg-gray-200 hover:bg-gray-300 text-gray-700"
+                      }`}
+                    >
+                      Buat DOC
+                    </button>
                   </td>
                 </tr>
               );
@@ -387,16 +427,16 @@ export default function DataGrid({ rawTextData, onReset }) {
       {modalBA.isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 transition-opacity">
           <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-sm border-t-4 border-red-500">
-            <h3 className="text-lg font-bold text-gray-800 mb-2">
-              Pilih Tanggal Masalah
+            <h3 className="text-lg font-bold text-gray-800 mb-1">
+              Pilih Tanggal Berita Acara
             </h3>
             <p className="mb-4 text-sm text-gray-600">
               Pekerja:{" "}
               <span className="font-bold text-gray-900">{modalBA.nama}</span>
             </p>
 
-            <div className="max-h-48 overflow-y-auto border border-gray-200 p-3 mb-5 rounded-md bg-gray-50">
-              {modalBA.tglBermasalah.map((tgl) => (
+            <div className="max-h-56 overflow-y-auto border border-gray-200 p-3 mb-5 rounded-md bg-gray-50">
+              {tanggalList.map((tgl) => (
                 <label
                   key={tgl}
                   className="flex items-center space-x-3 mb-2 cursor-pointer p-1 hover:bg-gray-100 rounded"
@@ -437,7 +477,6 @@ export default function DataGrid({ rawTextData, onReset }) {
           </div>
         </div>
       )}
-      {/* ---------------------------------------- */}
     </div>
   );
 }
