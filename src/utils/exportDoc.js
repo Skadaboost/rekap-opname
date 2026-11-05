@@ -1,50 +1,86 @@
-// Helper untuk membuat HTML Berita Acara 1 Pekerja
+// Helper untuk format HTML Berita Acara 1 Pekerja
 const buildSingleHtml = (nama, unitKerja, tanggalList) => {
   const tableRows = tanggalList
     .map(
       (tgl, index) => `
     <tr>
-      <td style="padding: 5px; text-align: center;">${index + 1}</td>
-      <td style="padding: 5px; text-align: center;">${tgl}</td>
-      <td style="padding: 5px; text-align: center;">Masuk & Pulang</td>
-      <td style="padding: 5px;"></td>
+      <td style="padding: 6px; text-align: center; border: 1px solid black;">${index + 1}</td>
+      <td style="padding: 6px; text-align: center; border: 1px solid black;">${tgl}</td>
+      <td style="padding: 6px; text-align: center; border: 1px solid black;">Masuk & Pulang</td>
+      <td style="padding: 6px; border: 1px solid black;"></td>
     </tr>
   `,
     )
     .join("");
 
   return `
-    <div style="page-break-after: always;">
-      <h3 style="text-align: center;">BERITA ACARA ABSENSI BERMASALAH</h3>
-      <p>Pada hari ini, .......................... Tanggal .................................., bertempat di Workshop Sukamaju, saya yang bertanda tangan di bawah ini :</p>
+    <div class="ba-page">
+      <h3 style="text-align: center; font-size: 14pt; font-weight: bold; margin-bottom: 20px; text-transform: uppercase;">
+        BERITA ACARA ABSENSI BERMASALAH
+      </h3>
       
-      <table style="border: none; width: 100%;">
-        <tr><td style="width: 15%;">Nama</td><td style="width: 85%;">: ${nama}</td></tr>
-        <tr><td>Unit Kerja</td><td>: ${unitKerja}</td></tr>
-        <tr><td>Proyek</td><td>: Workshop Sukamaju</td></tr>
-      </table>
+      <p style="text-align: justify; line-height: 1.5; margin-bottom: 15px;">
+        Pada hari ini, .......................... Tanggal .................................., bertempat di Workshop Sukamaju, saya yang bertanda tangan di bawah ini :
+      </p>
       
-      <p>Bahwa pekerja tersebut tidak dapat menggunakan aplikasi absensi pada :</p>
-      
-      <table border="1" style="text-align: center; width: 100%; border-collapse: collapse;">
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; line-height: 1.6;">
         <tr>
-          <th style="padding: 5px; width: 10%;">No</th>
-          <th style="padding: 5px; width: 30%;">Tanggal</th>
-          <th style="padding: 5px; width: 25%;">Absen</th>
-          <th style="padding: 5px; width: 35%;">Alasan</th>
+          <td style="width: 18%; vertical-align: top;">Nama</td>
+          <td style="width: 82%;">: <b>${nama}</b></td>
         </tr>
-        ${tableRows}
+        <tr>
+          <td style="vertical-align: top;">Unit Kerja</td>
+          <td>: ${unitKerja}</td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;">Proyek</td>
+          <td>: Workshop Sukamaju</td>
+        </tr>
       </table>
       
-      <p>Sehingga absensi harus dibackup dengan mesin finger dan kartu amano. Oleh karena itu, saya mohon agar absensi selama periode tersebut tidak dihitung sebagai ketidakhadiran.</p>
-      <p>Demikian berita acara ini dibuat atas perhatiannya dan bantuannya saya ucapkan terima kasih.</p>
-      <br><br>
+      <p style="line-height: 1.5; margin-bottom: 10px;">
+        Bahwa pekerja tersebut tidak dapat menggunakan aplikasi absensi pada :
+      </p>
       
-      <table style="border: none; text-align: center; width: 100%;">
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th style="padding: 6px; width: 10%; border: 1px solid black; text-align: center;">No</th>
+            <th style="padding: 6px; width: 30%; border: 1px solid black; text-align: center;">Tanggal</th>
+            <th style="padding: 6px; width: 25%; border: 1px solid black; text-align: center;">Absen</th>
+            <th style="padding: 6px; width: 35%; border: 1px solid black; text-align: center;">Alasan</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows}
+        </tbody>
+      </table>
+      
+      <p style="text-align: justify; line-height: 1.5; margin-bottom: 10px;">
+        Sehingga absensi harus dibackup dengan mesin finger dan kartu amano. Oleh karena itu, saya mohon agar absensi selama periode tersebut tidak dihitung sebagai ketidakhadiran.
+      </p>
+      
+      <p style="text-align: justify; line-height: 1.5; margin-bottom: 35px;">
+        Demikian berita acara ini dibuat atas perhatiannya dan bantuannya saya ucapkan terima kasih.
+      </p>
+      
+      <table style="width: 100%; border-collapse: collapse; text-align: center;">
         <tr>
-          <td style="width: 33%;"><b>Dibuat Oleh,</b><br><br><br><br><br><u><b>${nama}</b></u><br>${unitKerja}</td>
-          <td style="width: 33%;"><b>Mengetahui,</b><br><br><br><br><br><u><b>Fajar Sukarno</b></u><br>Ka Workshop</td>
-          <td style="width: 33%;"><b> </b><br><br><br><br><br><u><b>Budi Pranoto</b></u><br>Manajer Workshop</td>
+          <td style="width: 33%; vertical-align: top;">
+            <b>Dibuat Oleh,</b><br><br><br><br><br>
+            <u><b>${nama}</b></u><br>
+            ${unitKerja}
+          </td>
+          <td style="width: 33%; vertical-align: top;">
+            <b>Mengetahui,</b><br><br><br><br><br>
+            <u><b>Fajar Sukarno</b></u><br>
+            Ka Workshop
+          </td>
+          <td style="width: 33%; vertical-align: top;">
+            <b> </b><br><br><br><br><br>
+            <u><b>Budi Pranoto</b></u><br>
+            Manajer Workshop
+          </td>
         </tr>
       </table>
     </div>
@@ -67,9 +103,18 @@ export const generateBeritaAcaraMassal = (
     return;
   }
 
-  // Gabungkan seluruh dokumen dengan pemisah halaman
+  // Gabungkan seluruh BA dan sisipkan instruksi hard page break MS Word di antara tiap BA
   const combinedBody = pekerjaBermasalahList
-    .map((p) => buildSingleHtml(p.nama, p.unitKerja, p.tanggalList))
+    .map((p, index) => {
+      const pageHtml = buildSingleHtml(p.nama, p.unitKerja, p.tanggalList);
+      if (index < pekerjaBermasalahList.length - 1) {
+        return (
+          pageHtml +
+          '<br clear="all" style="page-break-before:always; mso-break-type:section-break;" />'
+        );
+      }
+      return pageHtml;
+    })
     .join("");
 
   downloadDoc(
@@ -85,9 +130,31 @@ const downloadDoc = (htmlBodyContent, fileName) => {
     <head>
       <meta charset="utf-8">
       <title>Berita Acara</title>
+      <!--[if gte mso 9]>
+      <xml>
+        <w:WordDocument>
+          <w:View>Print</w:View>
+          <w:Zoom>100</w:Zoom>
+          <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+      </xml>
+      <![endif]-->
       <style>
-        body { font-family: 'Times New Roman', serif; font-size: 12pt; }
-        table { border-collapse: collapse; }
+        @page {
+          size: A4 portrait;
+          margin: 2cm 2cm 2cm 2cm;
+        }
+        body {
+          font-family: 'Times New Roman', serif;
+          font-size: 11pt;
+          color: #000000;
+        }
+        .ba-page {
+          width: 100%;
+        }
+        table {
+          border-collapse: collapse;
+        }
       </style>
     </head>
     <body>
