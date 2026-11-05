@@ -92,12 +92,12 @@ use chrome, FireFox or Internet Explorer 11`)}var a=e(`safe-buffer`),o=e(`random
 \r -퟿-�𐀀-􏿿`,n.S=` 	\r
 `,n.NAME_START_CHAR=`:A-Z_a-zÀ-ÖØ-öø-˿Ͱ-ͽͿ-῿‌‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿`,n.NAME_CHAR=`-`+n.NAME_START_CHAR+`.0-9·̀-ͯ‿-⁀`,n.CHAR_RE=RegExp(`^[`+n.CHAR+`]$`,`u`),n.S_RE=RegExp(`^[`+n.S+`]+$`,`u`),n.NAME_START_CHAR_RE=RegExp(`^[`+n.NAME_START_CHAR+`]$`,`u`),n.NAME_CHAR_RE=RegExp(`^[`+n.NAME_CHAR+`]$`,`u`),n.NAME_RE=RegExp(`^[`+n.NAME_START_CHAR+`][`+n.NAME_CHAR+`]*$`,`u`),n.NMTOKEN_RE=RegExp(`^[`+n.NAME_CHAR+`]+$`,`u`);function r(e){return e>=65&&e<=90||e>=97&&e<=122||e===58||e===95||e===8204||e===8205||e>=192&&e<=214||e>=216&&e<=246||e>=248&&e<=767||e>=880&&e<=893||e>=895&&e<=8191||e>=8304&&e<=8591||e>=11264&&e<=12271||e>=12289&&e<=55295||e>=63744&&e<=64975||e>=65008&&e<=65533||e>=65536&&e<=983039}n.S_LIST=[32,10,13,9],n.isChar=function(e){return e>=32&&e<=55295||e===10||e===13||e===9||e>=57344&&e<=65533||e>=65536&&e<=1114111},n.isS=function(e){return e===32||e===10||e===13||e===9},n.isNameStartChar=r,n.isNameChar=function(e){return r(e)||e>=48&&e<=57||e===45||e===46||e===183||e>=768&&e<=879||e>=8255&&e<=8256}},{}],544:[function(e,t,n){Object.defineProperty(n,"__esModule",{value:!0}),n.CHAR=`-퟿-�𐀀-􏿿`,n.RESTRICTED_CHAR=`-\b\v\f---`,n.S=` 	\r
 `,n.NAME_START_CHAR=`:A-Z_a-zÀ-ÖØ-öø-˿Ͱ-ͽͿ-῿‌‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿`,n.NAME_CHAR=`-`+n.NAME_START_CHAR+`.0-9·̀-ͯ‿-⁀`,n.CHAR_RE=RegExp(`^[`+n.CHAR+`]$`,`u`),n.RESTRICTED_CHAR_RE=RegExp(`^[`+n.RESTRICTED_CHAR+`]$`,`u`),n.S_RE=RegExp(`^[`+n.S+`]+$`,`u`),n.NAME_START_CHAR_RE=RegExp(`^[`+n.NAME_START_CHAR+`]$`,`u`),n.NAME_CHAR_RE=RegExp(`^[`+n.NAME_CHAR+`]$`,`u`),n.NAME_RE=RegExp(`^[`+n.NAME_START_CHAR+`][`+n.NAME_CHAR+`]*$`,`u`),n.NMTOKEN_RE=RegExp(`^[`+n.NAME_CHAR+`]+$`,`u`);function r(e){return e>=65&&e<=90||e>=97&&e<=122||e===58||e===95||e===8204||e===8205||e>=192&&e<=214||e>=216&&e<=246||e>=248&&e<=767||e>=880&&e<=893||e>=895&&e<=8191||e>=8304&&e<=8591||e>=11264&&e<=12271||e>=12289&&e<=55295||e>=63744&&e<=64975||e>=65008&&e<=65533||e>=65536&&e<=983039}n.S_LIST=[32,10,13,9],n.isChar=function(e){return e>=1&&e<=55295||e>=57344&&e<=65533||e>=65536&&e<=1114111},n.isRestrictedChar=function(e){return e>=1&&e<=8||e===11||e===12||e>=14&&e<=31||e>=127&&e<=132||e>=134&&e<=159},n.isCharAndNotRestricted=function(e){return e===9||e===10||e===13||e>31&&e<127||e===133||e>159&&e<=55295||e>=57344&&e<=65533||e>=65536&&e<=1114111},n.isS=function(e){return e===32||e===10||e===13||e===9},n.isNameStartChar=r,n.isNameChar=function(e){return r(e)||e>=48&&e<=57||e===45||e===46||e===183||e>=768&&e<=879||e>=8255&&e<=8256}},{}],545:[function(e,t,n){function r(e){return e>=65&&e<=90||e===95||e>=97&&e<=122||e>=192&&e<=214||e>=216&&e<=246||e>=248&&e<=767||e>=880&&e<=893||e>=895&&e<=8191||e>=8204&&e<=8205||e>=8304&&e<=8591||e>=11264&&e<=12271||e>=12289&&e<=55295||e>=63744&&e<=64975||e>=65008&&e<=65533||e>=65536&&e<=983039}Object.defineProperty(n,"__esModule",{value:!0}),n.NC_NAME_START_CHAR=`A-Z_a-zÀ-ÖØ-öø-˿Ͱ-ͽͿ-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿`,n.NC_NAME_CHAR=`-`+n.NC_NAME_START_CHAR+`.0-9·̀-ͯ‿-⁀`,n.NC_NAME_START_CHAR_RE=RegExp(`^[`+n.NC_NAME_START_CHAR+`]$`,`u`),n.NC_NAME_CHAR_RE=RegExp(`^[`+n.NC_NAME_CHAR+`]$`,`u`),n.NC_NAME_RE=RegExp(`^[`+n.NC_NAME_START_CHAR+`][`+n.NC_NAME_CHAR+`]*$`,`u`),n.isNCNameStartChar=r,n.isNCNameChar=function(e){return r(e)||e===45||e===46||e>=48&&e<=57||e===183||e>=768&&e<=879||e>=8255&&e<=8256}},{}]},{},[15])(15)}))}))(),1),Wa=e=>{let t=[``,`Satu`,`Dua`,`Tiga`,`Empat`,`Lima`,`Enam`,`Tujuh`,`Delapan`,`Sembilan`,`Sepuluh`,`Sebelas`],n=``;return e<12?n=` `+t[e]:e<20?n=Wa(e-10)+` Belas`:e<100?n=Wa(Math.floor(e/10))+` Puluh`+Wa(e%10):e<200?n=` Seratus`+Wa(e-100):e<1e3?n=Wa(Math.floor(e/100))+` Ratus`+Wa(e%100):e<2e3?n=` Seribu`+Wa(e-1e3):e<1e6?n=Wa(Math.floor(e/1e3))+` Ribu`+Wa(e%1e3):e<1e9?n=Wa(Math.floor(e/1e6))+` Juta`+Wa(e%1e6):e<0xe8d4a51000&&(n=Wa(Math.floor(e/1e9))+` Milyar`+Wa(e%1e9)),n},Ga=e=>e===0?`Nol Rupiah`:Wa(Math.round(e)).trim()+` Rupiah`,Ka=async(e,t)=>{let n=localStorage.getItem(`dataPekerja`),r=n?JSON.parse(n):[],i=[...t].sort((e,t)=>{let n=r.find(t=>t.nama.toLowerCase().trim()===e.nama.toLowerCase().trim())||{},i=r.find(e=>e.nama.toLowerCase().trim()===t.nama.toLowerCase().trim())||{},a=(n.unitKerja||`WORKSHOP`).toLowerCase(),o=(i.unitKerja||`WORKSHOP`).toLowerCase();if(a<o)return-1;if(a>o)return 1;let s=(e.nama||``).toLowerCase(),c=(t.nama||``).toLowerCase();return s.localeCompare(c)}),a=new Ua.default.Workbook,o=e.length>0?`${e[0]} s.d. ${e[e.length-1]}`:``,s=`_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)`,c=a.addWorksheet(`Absen`);c.getCell(`D1`).value=`REKAP GAJI TENAGA KERJA HARIAN WORKSHOP SUKAMAJU`,c.getCell(`D1`).font={bold:!0,size:14},c.getCell(`A2`).value=`Bagian : WORKSHOP`,c.getCell(`A3`).value=`Periode : ${o}`;let l=[`NO`,`NAMA`,`Unit Kerja`],u=[``,``,``];e.forEach(e=>{l.push(e.substring(0,5),``),u.push(`H`,`L`)}),l.push(`Total`,``,`UM`),u.push(`Hari`,`Lembur`,``),c.addRow(l),c.addRow(u),c.mergeCells(`A4:A5`),c.mergeCells(`B4:B5`),c.mergeCells(`C4:C5`);let d=4;e.forEach(()=>{c.mergeCells(4,d,4,d+1),d+=2}),c.mergeCells(4,d,4,d+1),c.mergeCells(4,d+2,5,d+2),[4,5].forEach(e=>c.getRow(e).eachCell({includeEmpty:!0},e=>{e.font={bold:!0},e.alignment={horizontal:`center`,vertical:`middle`},e.border={top:{style:`thin`},left:{style:`thin`},bottom:{style:`thin`},right:{style:`thin`}}})),i.forEach((t,n)=>{let i=r.find(e=>e.nama.toLowerCase().trim()===t.nama.toLowerCase().trim())||{},a=0,o=0,s=0,l=[n+1,t.nama,i.unitKerja||`WORKSHOP`];e.forEach(e=>{let n=t.absen[e]?.H||0,r=t.absen[e]?.L||0;s+=t.absen[e]?.UM||0,a+=n,o+=r,l.push(n,r)}),l.push(a,o,s),c.addRow(l).eachCell({includeEmpty:!0},(e,t)=>{e.border={top:{style:`thin`},left:{style:`thin`},bottom:{style:`thin`},right:{style:`thin`}},e.alignment={vertical:`middle`},t>=4&&(e.alignment={horizontal:`center`,vertical:`middle`},e.value===0?e.value=``:e.numFmt=`0.0`)})}),c.getColumn(1).width=5,c.getColumn(2).width=25,c.getColumn(3).width=15;for(let t=4;t<=3+e.length*2+3;t++)c.getColumn(t).width=5;let f=a.addWorksheet(`Rekap`);f.getCell(`A1`).value=`PT MULTIBANGUN ADHITAMA KONSTRUKSI`,f.getCell(`A1`).font={bold:!0},f.getCell(`A2`).value=`PROYEK WORKSHOP SUKAMAJU`,f.getCell(`A2`).font={bold:!0},f.getCell(`A3`).value=`BOGOR`,f.getCell(`A3`).font={bold:!0},f.getCell(`D5`).value=`REKAPITULASI OPNAME HARIAN`,f.getCell(`D5`).font={bold:!0,size:14},f.getCell(`A6`).value=`Periode                : ${o}`;let p=f.addRow([`NO.`,`NAMA`,`UNIT KERJA`,`JUMLAH HARI`,`UPAH (Rp/Hari)`,`JUMLAH JAM LEMBUR`,`UPAH (Rp/Jam)`,`JUMLAH JAM UM`,`UPAH (Rp/Jam)`,`JUMLAH (Rp)`,`BANK`,`NOMOR REKENING`,`ATAS NAMA REKENING`]);p.height=30,p.eachCell(e=>{e.font={bold:!0},e.alignment={horizontal:`center`,vertical:`middle`,wrapText:!0},e.border={top:{style:`thin`},left:{style:`thin`},bottom:{style:`thin`},right:{style:`thin`}}});let m=null,h=0,g=0,_=1,v=e=>{e.eachCell({includeEmpty:!0},e=>{e.border={top:{style:`thin`},left:{style:`thin`},bottom:{style:`thin`},right:{style:`thin`}},e.alignment={vertical:`middle`}})};if(i.forEach(t=>{let n=r.find(e=>e.nama.toLowerCase().trim()===t.nama.toLowerCase().trim())||{},i=(n.unitKerja||`UMUM`).toUpperCase();if(m!==i){if(m!==null){let e=f.addRow([``,``,``,``,``,``,``,``,``,h,``,``,``]);v(e),e.getCell(10).font={bold:!0},e.getCell(10).numFmt=s,f.addRow([])}let e=f.addRow([``,i,``,``,``,``,``,``,``,``,``,``,``]);v(e),e.getCell(2).font={bold:!0},m=i,h=0,_=1}let a=0,o=0,c=0;e.forEach(e=>{a+=t.absen[e]?.H||0,o+=t.absen[e]?.L||0,c+=t.absen[e]?.UM||0});let l=Number(n.upahHarian)||0,u=Number(n.upahLembur)||0,d=15e3,p=a*l,y=o*u,b=c*d,x=p+y+b;h+=x,g+=x;let S=[_++,t.nama,n.unitKerja||`UMUM`,a,l,o,u,c,d,x,n.bank||``,n.rekening||``,n.atasNama||``],C=f.addRow(S);v(C),C.eachCell((e,t)=>{[1,4,6,8,11].includes(t)&&(e.alignment={horizontal:`center`,vertical:`middle`}),[4,6,8].includes(t)&&(e.value===0?e.value=`-`:e.numFmt=`0.0`),[5,7,9,10].includes(t)&&(e.numFmt=s)})}),m!==null){let e=f.addRow([``,``,``,``,``,``,``,``,``,h,``,``,``]);v(e),e.getCell(10).font={bold:!0},e.getCell(10).numFmt=s}f.addRow([]);let y=f.addRow([`JUMLAH`,``,``,``,``,``,``,``,``,g,``,``,``]);f.mergeCells(`A${y.number}:I${y.number}`),[`A`,`J`,`K`,`L`,`M`].forEach(e=>{y.getCell(e).border={top:{style:`thick`},left:{style:`thin`},bottom:{style:`thick`},right:{style:`thin`}}}),y.getCell(`A`).font={bold:!0},y.getCell(`J`).font={bold:!0},y.getCell(`J`).numFmt=s;let b=f.addRow([`Terbilang :`,Ga(g)]);f.mergeCells(`B${b.number}:M${b.number}`),b.getCell(`A`).font={italic:!0},b.getCell(`B`).font={italic:!0,bold:!0},f.addRow([]),f.addRow([]),f.addRow([``,`Bogor, ........................... 202...`,``,``,``,``,``,``,``,``,``,``,``]),f.addRow([``,`Personalia,`,``,``,`Kabag. Logistik,`,``,``,`Kepala Workshop,`,``,``,`Manajer Workshop,`,``,``]),f.addRow([]),f.addRow([]),f.addRow([]),f.addRow([``,`Hadid I`,``,``,`Robi S`,``,``,`Fajar S`,``,``,`Budi Pranoto`,``,``]).eachCell(e=>{e.font={bold:!0},e.alignment={horizontal:`left`}}),f.columns=[{width:5},{width:25},{width:18},{width:10},{width:15},{width:12},{width:15},{width:10},{width:15},{width:18},{width:10},{width:20},{width:25}];let x=await a.xlsx.writeBuffer(),S=new Blob([x],{type:`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`});(0,Va.saveAs)(S,`Rekap_Opname_${o}.xlsx`)},qa=(e,t,n)=>`
-    <div className="ba-item" style="page-break-inside: avoid; page-break-after: always;">
-      <h3 style="text-align: center; font-size: 13pt; font-weight: bold; margin-top: 0; margin-bottom: 12px; text-transform: uppercase;">
+    <div class="ba-page">
+      <h3 style="text-align: center; font-size: 13pt; font-weight: bold; margin-top: 0; margin-bottom: 10px; text-transform: uppercase;">
         BERITA ACARA ABSENSI BERMASALAH
       </h3>
       
-      <p style="text-align: justify; line-height: 1.25; margin-bottom: 8px;">
+      <p style="text-align: justify; line-height: 1.2; margin-bottom: 8px;">
         Pada hari ini, .......................... Tanggal .................................., bertempat di Workshop Sukamaju, saya yang bertanda tangan di bawah ini :
       </p>
       
@@ -116,36 +116,36 @@ use chrome, FireFox or Internet Explorer 11`)}var a=e(`safe-buffer`),o=e(`random
         </tr>
       </table>
       
-      <p style="line-height: 1.25; margin-bottom: 6px;">
+      <p style="line-height: 1.2; margin-bottom: 6px;">
         Bahwa pekerja tersebut tidak dapat menggunakan aplikasi absensi pada :
       </p>
       
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
         <thead>
           <tr style="background-color: #f2f2f2;">
-            <th style="padding: 4px; width: 10%; border: 1pt solid black; text-align: center;">No</th>
-            <th style="padding: 4px; width: 30%; border: 1pt solid black; text-align: center;">Tanggal</th>
-            <th style="padding: 4px; width: 25%; border: 1pt solid black; text-align: center;">Absen</th>
-            <th style="padding: 4px; width: 35%; border: 1pt solid black; text-align: center;">Alasan</th>
+            <th style="padding: 4px; width: 10%; border: 1px solid black; text-align: center;">No</th>
+            <th style="padding: 4px; width: 30%; border: 1px solid black; text-align: center;">Tanggal</th>
+            <th style="padding: 4px; width: 25%; border: 1px solid black; text-align: center;">Absen</th>
+            <th style="padding: 4px; width: 35%; border: 1px solid black; text-align: center;">Alasan</th>
           </tr>
         </thead>
         <tbody>
           ${n.map((e,t)=>`
     <tr>
-      <td style="padding: 3px 5px; text-align: center; border: 1pt solid black;">${t+1}</td>
-      <td style="padding: 3px 5px; text-align: center; border: 1pt solid black;">${e}</td>
-      <td style="padding: 3px 5px; text-align: center; border: 1pt solid black;">Masuk & Pulang</td>
-      <td style="padding: 3px 5px; border: 1pt solid black;"></td>
+      <td style="padding: 3px 5px; text-align: center; border: 1px solid black;">${t+1}</td>
+      <td style="padding: 3px 5px; text-align: center; border: 1px solid black;">${e}</td>
+      <td style="padding: 3px 5px; text-align: center; border: 1px solid black;">Masuk & Pulang</td>
+      <td style="padding: 3px 5px; border: 1px solid black;"></td>
     </tr>
   `).join(``)}
         </tbody>
       </table>
       
-      <p style="text-align: justify; line-height: 1.25; margin-bottom: 6px;">
+      <p style="text-align: justify; line-height: 1.2; margin-bottom: 6px;">
         Sehingga absensi harus dibackup dengan mesin finger dan kartu amano. Oleh karena itu, saya mohon agar absensi selama periode tersebut tidak dihitung sebagai ketidakhadiran.
       </p>
       
-      <p style="text-align: justify; line-height: 1.25; margin-bottom: 25px;">
+      <p style="text-align: justify; line-height: 1.2; margin-bottom: 20px;">
         Demikian berita acara ini dibuat atas perhatiannya dan bantuannya saya ucapkan terima kasih.
       </p>
       
@@ -199,6 +199,9 @@ use chrome, FireFox or Internet Explorer 11`)}var a=e(`safe-buffer`),o=e(`random
         }
         table {
           border-collapse: collapse;
+        }
+        .ba-page {
+          page-break-inside: avoid;
         }
       </style>
     </head>
