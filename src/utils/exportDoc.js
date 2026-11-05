@@ -4,26 +4,26 @@ const buildSingleHtml = (nama, unitKerja, tanggalList) => {
     .map(
       (tgl, index) => `
     <tr>
-      <td style="padding: 6px; text-align: center; border: 1px solid black;">${index + 1}</td>
-      <td style="padding: 6px; text-align: center; border: 1px solid black;">${tgl}</td>
-      <td style="padding: 6px; text-align: center; border: 1px solid black;">Masuk & Pulang</td>
-      <td style="padding: 6px; border: 1px solid black;"></td>
+      <td style="padding: 4px; text-align: center; border: 1px solid black;">${index + 1}</td>
+      <td style="padding: 4px; text-align: center; border: 1px solid black;">${tgl}</td>
+      <td style="padding: 4px; text-align: center; border: 1px solid black;">Masuk & Pulang</td>
+      <td style="padding: 4px; border: 1px solid black;"></td>
     </tr>
   `,
     )
     .join("");
 
   return `
-    <div class="ba-page">
-      <h3 style="text-align: center; font-size: 14pt; font-weight: bold; margin-bottom: 20px; text-transform: uppercase;">
+    <div class="ba-container">
+      <h3 style="text-align: center; font-size: 13pt; font-weight: bold; margin-top: 0; margin-bottom: 12px; text-transform: uppercase;">
         BERITA ACARA ABSENSI BERMASALAH
       </h3>
       
-      <p style="text-align: justify; line-height: 1.5; margin-bottom: 15px;">
+      <p style="text-align: justify; line-height: 1.3; margin-bottom: 10px;">
         Pada hari ini, .......................... Tanggal .................................., bertempat di Workshop Sukamaju, saya yang bertanda tangan di bawah ini :
       </p>
       
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; line-height: 1.6;">
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; line-height: 1.4;">
         <tr>
           <td style="width: 18%; vertical-align: top;">Nama</td>
           <td style="width: 82%;">: <b>${nama}</b></td>
@@ -38,17 +38,17 @@ const buildSingleHtml = (nama, unitKerja, tanggalList) => {
         </tr>
       </table>
       
-      <p style="line-height: 1.5; margin-bottom: 10px;">
+      <p style="line-height: 1.3; margin-bottom: 8px;">
         Bahwa pekerja tersebut tidak dapat menggunakan aplikasi absensi pada :
       </p>
       
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
         <thead>
           <tr style="background-color: #f2f2f2;">
-            <th style="padding: 6px; width: 10%; border: 1px solid black; text-align: center;">No</th>
-            <th style="padding: 6px; width: 30%; border: 1px solid black; text-align: center;">Tanggal</th>
-            <th style="padding: 6px; width: 25%; border: 1px solid black; text-align: center;">Absen</th>
-            <th style="padding: 6px; width: 35%; border: 1px solid black; text-align: center;">Alasan</th>
+            <th style="padding: 4px; width: 10%; border: 1px solid black; text-align: center;">No</th>
+            <th style="padding: 4px; width: 30%; border: 1px solid black; text-align: center;">Tanggal</th>
+            <th style="padding: 4px; width: 25%; border: 1px solid black; text-align: center;">Absen</th>
+            <th style="padding: 4px; width: 35%; border: 1px solid black; text-align: center;">Alasan</th>
           </tr>
         </thead>
         <tbody>
@@ -56,28 +56,28 @@ const buildSingleHtml = (nama, unitKerja, tanggalList) => {
         </tbody>
       </table>
       
-      <p style="text-align: justify; line-height: 1.5; margin-bottom: 10px;">
+      <p style="text-align: justify; line-height: 1.3; margin-bottom: 8px;">
         Sehingga absensi harus dibackup dengan mesin finger dan kartu amano. Oleh karena itu, saya mohon agar absensi selama periode tersebut tidak dihitung sebagai ketidakhadiran.
       </p>
       
-      <p style="text-align: justify; line-height: 1.5; margin-bottom: 35px;">
+      <p style="text-align: justify; line-height: 1.3; margin-bottom: 20px;">
         Demikian berita acara ini dibuat atas perhatiannya dan bantuannya saya ucapkan terima kasih.
       </p>
       
       <table style="width: 100%; border-collapse: collapse; text-align: center;">
         <tr>
           <td style="width: 33%; vertical-align: top;">
-            <b>Dibuat Oleh,</b><br><br><br><br><br>
+            <b>Dibuat Oleh,</b><br><br><br><br>
             <u><b>${nama}</b></u><br>
             ${unitKerja}
           </td>
           <td style="width: 33%; vertical-align: top;">
-            <b>Mengetahui,</b><br><br><br><br><br>
+            <b>Mengetahui,</b><br><br><br><br>
             <u><b>Fajar Sukarno</b></u><br>
             Ka Workshop
           </td>
           <td style="width: 33%; vertical-align: top;">
-            <b> </b><br><br><br><br><br>
+            <b> </b><br><br><br><br>
             <u><b>Budi Pranoto</b></u><br>
             Manajer Workshop
           </td>
@@ -103,14 +103,14 @@ export const generateBeritaAcaraMassal = (
     return;
   }
 
-  // Gabungkan seluruh BA dan sisipkan instruksi hard page break MS Word di antara tiap BA
+  // Paragraf khusus penanda pemutus halaman (Page Break) untuk Microsoft Word
   const combinedBody = pekerjaBermasalahList
     .map((p, index) => {
       const pageHtml = buildSingleHtml(p.nama, p.unitKerja, p.tanggalList);
       if (index < pekerjaBermasalahList.length - 1) {
         return (
           pageHtml +
-          '<br clear="all" style="page-break-before:always; mso-break-type:section-break;" />'
+          '<p style="page-break-before: always; mso-break-type: section-break; margin: 0; padding: 0;"></p>'
         );
       }
       return pageHtml;
@@ -140,25 +140,30 @@ const downloadDoc = (htmlBodyContent, fileName) => {
       </xml>
       <![endif]-->
       <style>
-        @page {
-          size: A4 portrait;
-          margin: 2cm 2cm 2cm 2cm;
+        @page WordSection1 {
+          size: 595.3pt 841.9pt; /* Ukuran A4 */
+          margin: 1.5cm 2cm 1.5cm 2cm;
+          mso-header-margin: 36.0pt;
+          mso-footer-margin: 36.0pt;
+        }
+        div.WordSection1 {
+          page: WordSection1;
         }
         body {
           font-family: 'Times New Roman', serif;
           font-size: 11pt;
           color: #000000;
         }
-        .ba-page {
-          width: 100%;
-        }
-        table {
-          border-collapse: collapse;
+        p {
+          margin: 0;
+          padding: 0;
         }
       </style>
     </head>
     <body>
-      ${htmlBodyContent}
+      <div class="WordSection1">
+        ${htmlBodyContent}
+      </div>
     </body>
     </html>
   `;
